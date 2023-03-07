@@ -19,10 +19,10 @@ function Task(){
 
     const proj = data.map((element)=>{
         console.log(element)
-        return <TaskItems 
+        return <TaskItems
             id={element.id}
             due={element.due}
-            title={element.title} 
+            title={element.title}
             description={element.description}
             key={element.id}
             status={element.status}

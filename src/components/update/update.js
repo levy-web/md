@@ -32,17 +32,18 @@ function Updates({project, setProject}){
     function getChangedValue(e){
         setStatus(e.target.value)        
     }
+
     function usernameChange(e){
         setUsername(e.target.value)
     }
 
     function handleDeleteProject(){
-        fetch(`http://localhost:9292/tasks/${project.id}`,{
+        fetch(`http://localhost:9292/tasks/${task.id}`,{
             method: 'DELETE'
         })
         .then((res)=>res.json())
         .then((data)=>{
-            setContributor(data)
+            console.log(data)
             navigate('/') 
         })
 
@@ -51,19 +52,19 @@ function Updates({project, setProject}){
 
     function handleUpdateProject(){
         const formData={
-            description: description,
-            status: status
+            "description": description,
+            "status": status
         }
 
-        fetch(`http://localhost:9292/tasks/${project.id}`,{
+        fetch(`http://localhost:9292/tasks/${task.id}`,{
             method: 'PATCH',
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify(formData)
         })
         .then((res)=>res.json())
         .then((data)=>{
-            setContributor(data)
-            navigate('/') 
+            console.log(data)
+            navigate('/')
         })
 
 
