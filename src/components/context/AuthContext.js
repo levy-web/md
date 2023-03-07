@@ -78,14 +78,14 @@ export const AuthContextProvider = ({children}) => {
       .then((res)=>res.json())
       .then((data)=>{
           setTask(data)
-          navigate(`/${id}/project`)
+          navigate(`/${id}/tasks`)
       })
 
     }
 
 
     return(
-        <UserContext.Provider value={{userId,data,task,updateTask, setData, signIn, logout, createUser}}>
+        <UserContext.Provider value={{userId,data,task,setTask, updateTask, setData, signIn, logout, createUser}}>
 
             {children}
 

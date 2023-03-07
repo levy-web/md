@@ -1,33 +1,25 @@
 import React, {useEffect, useState} from "react"
 import {  useNavigate, Link } from "react-router-dom"
 import Nav from "../home/Nav"
+import {UserAuth} from '../context/AuthContext'
 
 
 
 function Updates({project, setProject}){
+    const {task,setTask} = UserAuth()
     const [username, setUsername] = useState('')
     const [status, setStatus] = useState(0)
-    const [description, setdescription] = useState(project.description)
+    const [description, setdescription] = useState(task.description)
     const [contributor, setContributor] = useState([])
     const [contrib, setContrib] = useState([])
     const navigate = useNavigate()
     const [projId, setprojId] = useState('')
     console.log(project)
     console.log(contributor)
+    
 
 
 
-    // useEffect(()=>{
-    //     const data = window.localStorage.getItem('PROJECTID')
-    //     if (data !== null){
-    //       console.log(data)
-    //       setprojId(JSON.parse(data))}
-  
-    //   },[])
-
-    //   useEffect((project)=>{
-    //     window.localStorage.setItem('PROJECTID', JSON.stringify(project.id)) 
-    //   }, [projId])
   
 
 
@@ -45,7 +37,7 @@ function Updates({project, setProject}){
     }
 
     function handleDeleteProject(){
-        fetch(`https://levy-projets-api.onrender.com/projects/${project.id}`,{
+        fetch(`http://localhost:9292/tasks/${project.id}`,{
             method: 'DELETE'
         })
         .then((res)=>res.json())
@@ -63,7 +55,7 @@ function Updates({project, setProject}){
             status: status
         }
 
-        fetch(`https://levy-projets-api.onrender.com/projects/${project.id}`,{
+        fetch(`http://localhost:9292/tasks/${project.id}`,{
             method: 'PATCH',
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify(formData)
@@ -77,38 +69,7 @@ function Updates({project, setProject}){
 
     }
 
-    function getContributor(e){
-        e.preventDefault()
 
-        const formData={
-            username: username,
-            project_id: project.id
-        }
-
-        fetch('https://levy-projets-api.onrender.com/members',{
-            method: 'POST',
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(formData)
-        })
-        .then((res)=>res.json())
-        .then((data)=>setContrib(data))
-
-
-    }
-    useEffect(()=>{
-
-        fetch(`https://levy-projets-api.onrender.com/users/${project.id}`)
-        .then((res)=>res.json())
-        .then((data)=>{
-            console.log(data)
-            setContributor(data)
-        })
-
-    },[contrib])
-
-    const contr = contributor.map((element)=>{
-        return <li key={element.id} >{element.username}</li>
-    })
 
 
 
@@ -125,11 +86,11 @@ function Updates({project, setProject}){
 
                             
                             
-                            <h5 className="card-title">{project.title}</h5>
+                            <h5 className="card-title">{task.title}</h5>
                             <textarea defaultValue={description} onChange={onDescriptionChange} rows='10' className="form-control"></textarea>
                             <small className="text-muted me-5">{`status:`}</small>
                             <select onChange={getChangedValue} className="form-select form-select-sm" aria-label=".form-select-sm example">
-                                <option defaultValue>${project.status}</option>
+                                <option defaultValue>${task.status}</option>
                                 <option value="1">complete</option>
                                 <option value="2">pending</option>
                             </select>
@@ -137,25 +98,9 @@ function Updates({project, setProject}){
                         </div>
                         <button onClick={handleUpdateProject} type="button" className="btn btn-success mb-2 p-2 m-auto">save</button>
                     </div>
-                </div>
-                <div className="col-sm-5">           
-                    <div className="card bg-light">   
-                        <div className="card-body">
-                            <h5 className="card-title">{`Add contributor:`}</h5>
-                            <form onSubmit={getContributor}>
-                                <label htmlFor="InputEmail" className="form-label">Username</label>                              
-                                <input value={username} onChange={usernameChange} type="text" className="ms-2"></input>
-                                <button  className="btn btn-primary ms-2" type="submit">add</button>
-                            </form>
-                            
-                        </div>
-                    </div>
-                    <div className="card bg-light mt-2">
-                        <div className="card-body">
-                        <h5 className="card-title">{`contributors:`}</h5>
-                            <ol>{contr}</ol>
-                        </div> 
-                    </div>
+               
+
+
                 </div>
             </div>
         </div>
